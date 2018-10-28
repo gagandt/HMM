@@ -92,6 +92,9 @@ y3 = [3,3,3]
 
 test_run = Dtw(x1, x2, x3, y1, y2, y3,3)
 print(test_run.knn([3,2,1,3,2,1]))
+
+#Here we have the stored the KNN as both the dtw distance and the class assigned in a 2d vector.
+#Can build a sort function to it and sort accordingly!
         
         
             
