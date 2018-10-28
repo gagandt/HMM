@@ -25,8 +25,7 @@ class Dtw:
     
     def dtw(self, x_train, label, sequence, k):
         n = len(sequence) + 1
-        knn_array = np.array([100, label])
-        #print(knn_array)
+        knn_array = np.array([])
 
         for test in x_train:
             m = len(test) + 1
@@ -34,10 +33,10 @@ class Dtw:
             mat = [[0 for x in range(m)] for y in range(n)] 
             
             for i in range(0, n):
-                mat[i][0] = 100
+                mat[i][0] = sys.maxsize
                 
             for i in range(0, m):
-                mat[0][i] = 100
+                mat[0][i] = sys.maxsize
             
             mat[0][0] = 0
             
@@ -46,36 +45,37 @@ class Dtw:
                     cost = abs(sequence[i-1] - test[j-1])
                     mat[i][j] = cost + min(mat[i-1][j], mat[i-1][j-1], mat[i][j-1])
             
-            
-            elem = np.array([mat[n-1][m-1], label])
-            #print(elem)
-            knn_array = np.vstack((knn_array, elem))
-            #knn_array = np.insert(knn_array, 1, [mat[n-1][m-1], label], axis = 1)
-            #print (mat)
+            knn_array = np.append(knn_array, mat[n-1][m-1])
         
         knn_array.sort(axis = 0)
-        
         #print(knn_array)
-        #print("hi")
         
         return knn_array[:k]
     
     def knn(self, sequence):
         knn_array = np.array([])
+        knn_class = np.array([])
         knn_array = self.dtw(self.x1_train, 1, sequence, self.k)
-        knn_array = np.vstack((knn_array, self.dtw(self.x2_train, 2, sequence, self.k)))
-        knn_array.sort(axis = 0)
+        t1 = np.empty(self.k); t1.fill(1)
+        knn_class = np.append(knn_class, t1)
+        
+        knn_array = np.append(knn_array, self.dtw(self.x2_train, 2, sequence, self.k))
+        t1 = np.empty(self.k); t1.fill(2)
+        knn_class = np.append(knn_class, t1)
+        #knn_array.sort(axis = 0)
         #knn_array = knn_array[:self.k]
-        knn_array = np.vstack((knn_array, self.dtw(self.x3_train, 3, sequence, self.k)))
-        knn_array.sort(axis = 0)
-        #knn_array = knn_array[:self.k]
-
+        knn_array = np.append(knn_array, self.dtw(self.x3_train, 2, sequence, self.k))
+        t1 = np.empty(self.k); t1.fill(3)
+        knn_class = np.append(knn_class, t1)
+        
+        knn_array, knn_class = zip(*sorted(zip(knn_array, knn_class)))
+        #knn_array.sort(axis = 0)
+        knn_array = knn_array[:self.k]
+        knn_class = knn_class[:self.k]
         
         count = [0,0,0]
-        #for seq in knn_array:
-         #   count[seq[1]-1] += 1
-        print(knn_array[0][1])
-        
+        for i in range(0,self.k):
+            count[int(knn_class[i])-1] += 1
         if (count[0] == max(count[0], count[1], count[2])):
             return 1
         elif (count[1] == max(count[0], count[1], count[2])):
@@ -91,7 +91,7 @@ x3 = [[1,3,2,1,3,2], [1,3,2,1,2], [1,2,1,3,2]]
 y3 = [3,3,3]
 
 test_run = Dtw(x1, x2, x3, y1, y2, y3,3)
-print(test_run.knn([3,2,1,3,2,1]))
+print(test_run.knn([1,3,2,1,3,2]))
         
         
             
