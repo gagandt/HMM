@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 from sklearn.metrics import confusion_matrix
 
 #   DTW Super Class.
@@ -53,7 +54,7 @@ class DTWSuper:
             
             for i in range(1, n):
                 for j in range(1, m):
-                    cost = abs(sequence[i-1] - test[j-1])
+                    cost = abs(sequence[i-1] - int(test[j-1]))
                     mat[i][j] = cost + min(mat[i-1][j], mat[i-1][j-1], mat[i][j-1])
             
             knn_array = np.append(knn_array, mat[n-1][m-1])
@@ -67,15 +68,15 @@ class DTWSuper:
         knn_array = np.array([])
         knn_class = np.array([])
 
-        knn_array = self.dtw(self.x1_train, 1, sequence, self.k)
+        knn_array = self.dtw(self.x1_train, sequence, self.k)
         t1 = np.empty(self.k); t1.fill(1)
         knn_class = np.append(knn_class, t1)
         
-        knn_array = np.append(knn_array, self.dtw(self.x2_train, 2, sequence, self.k))
+        knn_array = np.append(knn_array, self.dtw(self.x2_train, sequence, self.k))
         t1 = np.empty(self.k); t1.fill(2)
         knn_class = np.append(knn_class, t1)
         
-        knn_array = np.append(knn_array, self.dtw(self.x3_train, 2, sequence, self.k))
+        knn_array = np.append(knn_array, self.dtw(self.x3_train, sequence, self.k))
         t1 = np.empty(self.k); t1.fill(3)
         knn_class = np.append(knn_class, t1)
         
@@ -102,7 +103,8 @@ class DTWSuper:
             out_class = self.knn(test)
             y_pred = np.append(y_pred, out_class)
 
-        M = confusion_matrix(y_test, y_pred)
+        print(y_pred)
+        #M = confusion_matrix(self.y_test, y_pred)
 
         #knn_utility(M)
 
