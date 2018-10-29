@@ -104,6 +104,8 @@ class DTWSuper:
 
         M = confusion_matrix(y_test, y_pred)
 
+        #knn_utility(M)
+
     #Utility function for Precision, Recall and F-Measure.
     def knn_utility(self, M):
         hsum = [0,0,0]
