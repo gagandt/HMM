@@ -4,8 +4,16 @@ import sys
 import os
 
 from dtw_super import DTWSuper
+from data_initialiser import DATA
+
+data = DATA(8)
 
 
+test_run = DTWSuper(data.x_test, data.y_test, data.x1_train, data.x2_train, data.x3_train, data.y1_train, data.y2_train, data.y3_train, 4)
+print(test_run.knn_classifier())
+
+
+'''
 #training data sets
 x1_train = []
 with open('data/8/train/x1_train.txt') as f:
@@ -57,9 +65,10 @@ with open('data/8/test/x3_test.txt') as f:
        seq = [int(x) for x in line.split()]
        x.append(seq)
        y.append(3)
+'''
 
-test_run = DTWSuper(x, y, x1_train, x2_train, x3_train, y1_train, y2_train, y3_train, 4)
-print(test_run.knn_classifier())
+
+
 
 
         
