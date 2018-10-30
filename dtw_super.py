@@ -91,8 +91,8 @@ class DTWSuper:
         knn_array = knn_array[:self.k]
         knn_class = knn_class[:self.k]
         
-        print(knn_class)
-        print("-")
+        #print(knn_class)
+        #print("-")
         count = [0,0,0]
         for i in range(0,self.k):
             count[int(knn_class[i])-1] += 1

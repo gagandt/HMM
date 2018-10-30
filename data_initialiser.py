@@ -3,6 +3,12 @@ import pandas as pd
 import sys
 import os
 
+from dtw_super import DTWSuper
+
+#Data initialiser class.
+#Initialises the data given the value of M.
+#stores data in the form of np-arrays.
+
 class DATA:
     M = ""
     x_test = np.array([])
@@ -13,11 +19,13 @@ class DATA:
     y1_train = np.array([])
     y2_train = np.array([])
     y3_train = np.array([])
+    k = 4
     
-    def __init__(self, m_value):
+    def __init__(self, m_value, k_value):
         self.M = str(m_value)
         self.training(self.M)
         self.testing(self.M)
+        self.k = k_value
     
     def training(self, M):
         x1 = []
@@ -73,6 +81,10 @@ class DATA:
         
         self.x_test = np.array(x)
         self.y_test = np.array(y)
+        
+    def fit(self):
+        model = DTWSuper(self.x_test, self.y_test, self.x1_train, self.x2_train, self.x3_train, self.y1_train, self.y2_train, self.y3_train, self.k)
+        model.knn_classifier()
 
 
         
