@@ -1,6 +1,9 @@
 import numpy as np
 import sys
 from sklearn.metrics import confusion_matrix
+from scipy.spatial.distance import euclidean
+
+from fastdtw import fastdtw
 
 #   DTW Super Class.
 #   Solution to the first Question.
@@ -25,6 +28,7 @@ class DTWSuper:
     #K for KNN : knn_para
     def __init__(self, x_test, y_test, x1, x2, x3, y1, y2, y3, knn_para):
         self.x_test = x_test
+        self.y_test = y_test
         self.x1_train = x1
         self.x2_train = x2
         self.x3_train = x3
@@ -58,8 +62,11 @@ class DTWSuper:
                     mat[i][j] = cost + min(mat[i-1][j], mat[i-1][j-1], mat[i][j-1])
             
             knn_array = np.append(knn_array, mat[n-1][m-1])
-        
+            '''distance, path = fastdtw(test, sequence, dist=euclidean)
+            knn_array = np.append(knn_array, distance)'''
+           
         knn_array.sort(axis = 0)
+        #print(knn_array)
         
         return knn_array[:k]
     
@@ -84,6 +91,8 @@ class DTWSuper:
         knn_array = knn_array[:self.k]
         knn_class = knn_class[:self.k]
         
+        print(knn_class)
+        print("-")
         count = [0,0,0]
         for i in range(0,self.k):
             count[int(knn_class[i])-1] += 1
@@ -103,8 +112,11 @@ class DTWSuper:
             out_class = self.knn(test)
             y_pred = np.append(y_pred, out_class)
 
-        print(y_pred)
-        #M = confusion_matrix(self.y_test, y_pred)
+       # print(y_pred)
+        #print(len(y_pred))
+        #print(len(self.y_test))
+        M = confusion_matrix(self.y_test, y_pred)
+        print(M)
 
         #knn_utility(M)
 
