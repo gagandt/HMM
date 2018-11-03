@@ -62,8 +62,10 @@ class DTWSuper:
                     mat[i][j] = cost + min(mat[i-1][j], mat[i-1][j-1], mat[i][j-1])
             
             knn_array = np.append(knn_array, mat[n-1][m-1])
-            '''distance, path = fastdtw(test, sequence, dist=euclidean)
-            knn_array = np.append(knn_array, distance)'''
+            '''
+            distance, path = fastdtw(test, sequence, dist=euclidean)
+            knn_array = np.append(knn_array, distance)
+            '''
            
         knn_array.sort(axis = 0)
         #print(knn_array)
@@ -118,7 +120,7 @@ class DTWSuper:
         M = confusion_matrix(self.y_test, y_pred)
         print(M)
 
-        #knn_utility(M)
+        self.knn_utility(M)
 
     #Utility function for Precision, Recall and F-Measure.
     def knn_utility(self, M):
@@ -134,5 +136,7 @@ class DTWSuper:
                 v += M[i][j];
             
             hsum[j] = h;
-            r[j] = arr[j][j]*1.0/h*1.0
-            p[j] = arr[j][j]*1.0/v*1.0        
+            #r[j] = M[j][j]*1.0/h*1.0
+            #p[j] = arr[j][j]*1.0/v*1.0
+        
+        print(float(M[0][0] + M[1][1] + M[2][2])/float(hsum[1] + hsum[2] + hsum[0]))
