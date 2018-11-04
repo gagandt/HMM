@@ -84,7 +84,7 @@ class DATA:
         
     def fit(self):
         model = DTWSuper(self.x_test, self.y_test, self.x1_train, self.x2_train, self.x3_train, self.y1_train, self.y2_train, self.y3_train, self.k)
-        model.knn_classifier()
+        return model.knn_classifier()
 
 
         

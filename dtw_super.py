@@ -120,7 +120,8 @@ class DTWSuper:
         M = confusion_matrix(self.y_test, y_pred)
         print(M)
 
-        self.knn_utility(M)
+        ret = float(self.knn_utility(M))
+        return ret
 
     #Utility function for Precision, Recall and F-Measure.
     def knn_utility(self, M):
@@ -139,4 +140,4 @@ class DTWSuper:
             #r[j] = M[j][j]*1.0/h*1.0
             #p[j] = arr[j][j]*1.0/v*1.0
         
-        print(float(M[0][0] + M[1][1] + M[2][2])/float(hsum[1] + hsum[2] + hsum[0]))
+        return (float(M[0][0] + M[1][1] + M[2][2])/float(hsum[1] + hsum[2] + hsum[0]))
